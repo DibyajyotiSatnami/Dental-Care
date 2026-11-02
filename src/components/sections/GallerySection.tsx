@@ -52,7 +52,7 @@ export function GallerySection() {
 
         <Stagger className="mt-14 grid grid-flow-row-dense auto-rows-[15rem] grid-cols-1 gap-4 sm:grid-cols-2 lg:auto-rows-[17rem] lg:grid-cols-4" stagger={0.07}>
           {gallery.map((g, i) => (
-            <StaggerItem key={i} variants={scaleIn} className={cn("relative", spanClass[g.span])}>
+            <StaggerItem key={i} index={i} variants={scaleIn} className={cn("relative", spanClass[g.span])}>
               <button
                 type="button"
                 onClick={() => { setDir(1); setIndex(i); }}

@@ -220,7 +220,7 @@ export function AppointmentForm() {
             <m.div
               initial={{ opacity: 0, y: 40, scale: 0.98 }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true, amount: 0.15 }}
+              viewport={{ once: true, amount: 0.05 }}
               transition={{ duration: 1, ease: EASE, delay: 0.1 }}
               className="relative rounded-[2rem] bg-white p-6 shadow-lift sm:p-9"
             >

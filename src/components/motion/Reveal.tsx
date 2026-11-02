@@ -1,7 +1,7 @@
 "use client";
 
 import { m, type Variants } from "motion/react";
-import type { ReactNode } from "react";
+import { createContext, useContext, type ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
 export const EASE = [0.22, 1, 0.36, 1] as const;
@@ -21,7 +21,9 @@ export const scaleIn: Variants = {
   show: { opacity: 1, scale: 1, transition: { duration: 0.9, ease: EASE } },
 };
 
-const VIEWPORT = { once: true, amount: 0.2, margin: "0px 0px -60px 0px" } as const;
+// Small `amount` so even very tall elements trigger on small screens.
+const VIEWPORT = { once: true, amount: 0.1, margin: "0px 0px -40px 0px" } as const;
+const ITEM_VIEWPORT = { once: true, amount: 0.1, margin: "0px 0px -30px 0px" } as const;
 
 type RevealProps = {
   children: ReactNode;
@@ -49,7 +51,14 @@ export function Reveal({ children, className, delay = 0, variants = fadeUp, as =
   );
 }
 
-/** Parent that staggers its `StaggerItem` children as they scroll into view. */
+const StaggerCtx = createContext({ stagger: 0.09, delay: 0 });
+
+/**
+ * Container for staggered items. Each `StaggerItem` reveals itself when IT
+ * enters the viewport (not when the whole group does), so very tall grids —
+ * e.g. the services list on a phone — always appear. Items in the same row
+ * are offset by their `index` for the cascading effect.
+ */
 export function Stagger({
   children,
   className,
@@ -63,17 +72,11 @@ export function Stagger({
   delay?: number;
   as?: "div" | "ul" | "ol";
 }) {
-  const Comp = m[as];
+  const Comp = as;
   return (
-    <Comp
-      className={className}
-      initial="hidden"
-      whileInView="show"
-      viewport={VIEWPORT}
-      variants={{ hidden: {}, show: { transition: { staggerChildren: stagger, delayChildren: delay } } }}
-    >
-      {children}
-    </Comp>
+    <StaggerCtx.Provider value={{ stagger, delay }}>
+      <Comp className={className}>{children}</Comp>
+    </StaggerCtx.Provider>
   );
 }
 
@@ -82,15 +85,26 @@ export function StaggerItem({
   className,
   variants = fadeUp,
   as = "div",
+  index = 0,
 }: {
   children: ReactNode;
   className?: string;
   variants?: Variants;
   as?: "div" | "li" | "article";
+  /** Position in the group; only the position within a row (index % 3) adds delay. */
+  index?: number;
 }) {
+  const { stagger, delay } = useContext(StaggerCtx);
   const Comp = m[as];
   return (
-    <Comp className={cn(className)} variants={variants}>
+    <Comp
+      className={cn(className)}
+      variants={variants}
+      initial="hidden"
+      whileInView="show"
+      viewport={ITEM_VIEWPORT}
+      transition={{ delay: delay + (index % 3) * stagger }}
+    >
       {children}
     </Comp>
   );

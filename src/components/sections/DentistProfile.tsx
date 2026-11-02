@@ -57,8 +57,8 @@ export function DentistProfile() {
             </Reveal>
 
             <Stagger className="mt-8 grid gap-3 sm:grid-cols-3">
-              {facts.map(({ icon: Icon, label, value }) => (
-                <StaggerItem key={label} className="rounded-2xl border border-line bg-ivory p-4">
+              {facts.map(({ icon: Icon, label, value }, i) => (
+                <StaggerItem key={label} index={i} className="rounded-2xl border border-line bg-ivory p-4">
                   <Icon className="h-5 w-5 text-teal" strokeWidth={1.7} aria-hidden="true" />
                   <p className="mt-3 text-[0.7rem] font-bold uppercase tracking-[0.16em] text-navy/60">{label}</p>
                   <p className="mt-1 text-sm font-semibold text-navy">{value ?? <Pending />}</p>

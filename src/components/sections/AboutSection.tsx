@@ -70,8 +70,8 @@ export function AboutSection() {
             intro="At 32 Dental Care, we believe every smile deserves thoughtful attention and quality dental care. Our focus is on providing a comfortable patient experience through modern dental practices and personalized treatment approaches."
           />
           <Stagger className="mt-10 space-y-6">
-            {pillars.map(({ icon: Icon, title, text }) => (
-              <StaggerItem key={title} className="flex gap-5">
+            {pillars.map(({ icon: Icon, title, text }, i) => (
+              <StaggerItem key={title} index={i} className="flex gap-5">
                 <span className="mt-1 grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-teal/15 bg-white text-teal shadow-soft">
                   <Icon className="h-5 w-5" strokeWidth={1.7} aria-hidden="true" />
                 </span>

@@ -56,7 +56,7 @@ export function WhyChooseUs() {
 
         <Stagger className="grid gap-4 sm:grid-cols-2" stagger={0.08}>
           {reasons.map(({ icon: Icon, title, text }, i) => (
-            <StaggerItem key={title}>
+            <StaggerItem key={title} index={i % 2}>
               <m.div
                 whileHover={{ y: -6 }}
                 transition={{ type: "spring", stiffness: 300, damping: 26 }}

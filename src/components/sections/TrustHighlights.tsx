@@ -18,6 +18,7 @@ export function TrustHighlights() {
           {highlights.map(({ icon: Icon, title, text }, i) => (
             <StaggerItem
               key={title}
+              index={i}
               className={
                 "group relative p-7 transition-colors duration-500 hover:bg-mint/40 lg:p-8 " +
                 (i > 0 ? "border-t border-line sm:border-t-0 " : "") +

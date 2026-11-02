@@ -36,11 +36,11 @@ export function ServicesSection() {
 
         <Stagger className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-7" stagger={0.07}>
           {services.map((service, i) => (
-            <StaggerItem key={service.slug} as="article" className={i === 0 ? "lg:col-span-2" : ""}>
+            <StaggerItem key={service.slug} index={i} as="article" className={i === 0 ? "lg:col-span-2" : ""}>
               <ServiceCard service={service} index={i} featured={i === 0} onLearnMore={() => setSelected(service)} />
             </StaggerItem>
           ))}
-          <StaggerItem className="sm:col-span-2 lg:col-span-1">
+          <StaggerItem index={1} className="sm:col-span-2 lg:col-span-1">
             <div className="flex h-full flex-col justify-between rounded-[1.75rem] bg-navy p-8 text-white shadow-lift">
               <div>
                 <p className="eyebrow !text-mint">Pricing</p>
