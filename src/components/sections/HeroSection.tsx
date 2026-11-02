@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { m, useScroll, useTransform } from "motion/react";
-import { ArrowRight, CalendarCheck2, HeartHandshake, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowRight, CalendarCheck2, HeartHandshake, ShieldCheck, Sparkles, Stethoscope } from "lucide-react";
 import { site } from "@/config/site";
 import { images } from "@/content/images";
 import { ButtonLink } from "@/components/ui/Button";
@@ -50,14 +50,18 @@ export function HeroSection() {
             Dental Clinic in {site.location.city}, {site.location.region}
           </m.p>
 
-          <WordReveal
-            text={site.tagline}
-            highlight={["Smile.", "Passion."]}
-            animateOnMount
-            delay={0.35}
-            stagger={0.08}
-            className="mt-7 text-balance text-[2.9rem] font-extrabold leading-[1.02] tracking-[-0.035em] sm:text-6xl lg:text-[4.6rem] xl:text-[5.2rem]"
-          />
+          <div className="mt-7 flex items-center gap-3 sm:gap-4 lg:block">
+            <WordReveal
+              text={site.tagline}
+              highlight={["Smile.", "Passion."]}
+              animateOnMount
+              delay={0.35}
+              stagger={0.08}
+              // Phones: font scales with screen width so the headline and the doctor portrait share the row.
+              className="min-w-0 flex-1 text-balance text-[clamp(1.85rem,calc((100vw-2.5rem)*0.108),2.9rem)] font-extrabold leading-[1.02] tracking-[-0.035em] sm:text-6xl lg:text-[4.6rem] xl:text-[5.2rem]"
+            />
+            <HeroDoctorPortrait />
+          </div>
 
           <m.p {...intro(0.95)} className="mt-7 max-w-xl text-lg leading-relaxed text-muted sm:text-xl">
             Experience exceptional dental care with modern treatments, personalized attention, and a commitment to keeping
@@ -188,6 +192,33 @@ export function HeroSection() {
         </span>
       </m.a>
     </section>
+  );
+}
+
+/**
+ * Doctor portrait beside the headline on phones & tablets (the large hero image
+ * covers this on desktop). Uses the dentist's real photo once provided in
+ * src/config/site.ts; until then a placeholder stock portrait (src/content/images.ts).
+ */
+function HeroDoctorPortrait() {
+  const real = !site.dentist.photoIsPlaceholder;
+  const src = real ? site.dentist.photo : images.heroDoctor.src;
+  const alt = real ? `${site.dentist.name}, dentist at 32 Dental Care` : images.heroDoctor.alt;
+  return (
+    <m.div
+      initial={{ opacity: 0, y: 24, scale: 0.92 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 1.1, ease: EASE, delay: 0.7 }}
+      className="relative w-[26vw] max-w-[8.5rem] shrink-0 sm:w-44 sm:max-w-none lg:hidden"
+    >
+      <div className="absolute -inset-2 rounded-t-full rounded-b-[1.9rem] bg-gradient-to-b from-mint to-teal/20" aria-hidden="true" />
+      <div className="relative aspect-[3/4.2] overflow-hidden rounded-t-full rounded-b-[1.5rem] border-[3px] border-white bg-mint shadow-lift">
+        <SmartImage src={src} alt={alt} width={400} sizes="(min-width:640px) 176px, 30vw" priority className="object-[50%_20%]" />
+      </div>
+      <span className="absolute -bottom-2 -left-2 grid h-9 w-9 place-items-center rounded-full bg-teal text-white shadow-glow ring-[3px] ring-white sm:h-11 sm:w-11">
+        <Stethoscope className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
+      </span>
+    </m.div>
   );
 }
 

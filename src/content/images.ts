@@ -31,6 +31,12 @@ export const images = {
     alt: "Dentist gently examining a smiling patient in a bright, modern dental treatment room",
     placeholder: true,
   },
+  /** Doctor portrait shown beside the hero headline on phones (replaced automatically by the real dentist photo once set in site.ts). */
+  heroDoctor: {
+    src: unsplash("1559839734-2b71ea197ec2"),
+    alt: "Smiling doctor in a white coat with a stethoscope",
+    placeholder: true,
+  },
   aboutClinic: {
     src: unsplash("1588776814546-1ffcf47267a5"),
     alt: "Clean, modern dental treatment room with a patient chair and overhead light",
