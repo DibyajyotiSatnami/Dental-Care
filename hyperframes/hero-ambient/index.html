@@ -1,0 +1,105 @@
+<!doctype html>
+<!--
+  32 Dental Care — Hero ambient background (HyperFrames composition)
+  A seamless 12-second loop: drifting mint/teal light fields, two fine "dental arch"
+  line drawings, and the 32-dot brand motif breathing in sequence.
+  Rendered to /public/videos/hero-ambient.{webm,mp4,jpg} by ../render.sh
+-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Manrope"; src: url("assets/manrope.woff2") format("woff2"); font-weight: 200 800; }
+      :root { --ivory: #fafcfc; --mint: #ddf4ef; --teal: #087f8c; --navy: #123047; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--ivory); }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--ivory); }
+      .clip { position: absolute; inset: 0; }
+      .orb { position: absolute; border-radius: 50%; filter: blur(90px); will-change: transform; }
+      #orb1 { width: 900px; height: 900px; left: 1050px; top: -260px; background: radial-gradient(circle, #c3ebe2 0%, rgba(195,235,226,0) 70%); }
+      #orb2 { width: 760px; height: 760px; left: 1250px; top: 520px; background: radial-gradient(circle, rgba(8,127,140,.30) 0%, rgba(8,127,140,0) 70%); }
+      #orb3 { width: 680px; height: 680px; left: 640px; top: 300px; background: radial-gradient(circle, rgba(221,244,239,.95) 0%, rgba(221,244,239,0) 70%); }
+      #arches { position: absolute; inset: 0; }
+      #sweep { position: absolute; top: -200px; left: 0; width: 360px; height: 1500px; transform: rotate(18deg);
+        background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.55) 50%, rgba(255,255,255,0) 100%); }
+      #mark { position: absolute; left: 70px; bottom: 30px; font-family: "Manrope"; font-weight: 800; font-size: 380px;
+        letter-spacing: -0.06em; color: transparent; -webkit-text-stroke: 2px rgba(8,127,140,.10); line-height: 1; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="hero-ambient" data-start="0" data-duration="12" data-width="1920" data-height="1080" data-fps="30">
+      <div id="scene" class="clip" data-start="0" data-duration="12" data-track-index="0">
+        <div id="orb1" class="orb"></div>
+        <div id="orb2" class="orb"></div>
+        <div id="orb3" class="orb"></div>
+        <div id="mark">32</div>
+        <svg id="arches" viewBox="0 0 1920 1080" fill="none">
+          <path id="archUpper" d="M560 520 C 600 160, 960 60, 1240 60 S 1880 160, 1920 520" stroke="#087F8C" stroke-opacity=".28" stroke-width="2" />
+          <path id="archLower" d="M580 620 C 620 960, 960 1050, 1240 1050 S 1860 960, 1900 620" stroke="#123047" stroke-opacity=".14" stroke-width="2" />
+          <path id="flow1" d="M-40 860 C 400 760, 800 980, 1200 840 S 1800 640, 1980 700" stroke="#087F8C" stroke-opacity=".10" stroke-width="1.5" />
+          <path id="flow2" d="M-40 920 C 420 830, 820 1040, 1220 900 S 1800 720, 1980 780" stroke="#087F8C" stroke-opacity=".07" stroke-width="1.5" />
+          <g id="dots"></g>
+        </svg>
+        <div id="sweep"></div>
+      </div>
+    </div>
+    <script>
+      // Build the 32-dot motif: two arches of 16 (upper + lower teeth).
+      const NS = "http://www.w3.org/2000/svg";
+      const g = document.getElementById("dots");
+      const dots = [];
+      for (let arch = 0; arch < 2; arch++) {
+        for (let i = 0; i < 16; i++) {
+          const t = (i / 15) * Math.PI;
+          const cx = 1240 - Math.cos(t) * 600;
+          const cy = arch === 0 ? 530 - Math.sin(t) * 400 : 610 + Math.sin(t) * 380;
+          const c = document.createElementNS(NS, "circle");
+          c.setAttribute("cx", cx.toFixed(1));
+          c.setAttribute("cy", cy.toFixed(1));
+          c.setAttribute("r", "7");
+          c.setAttribute("fill", arch === 0 ? "#087F8C" : "#123047");
+          c.setAttribute("opacity", "0.16");
+          g.appendChild(c);
+          dots.push(c);
+        }
+      }
+
+      const D = 12; // loop length (seconds)
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // Light fields drift and return to their start for a seamless loop.
+      tl.to("#orb1", { x: -160, y: 90, scale: 1.08, duration: D / 2, ease: "sine.inOut", yoyo: true, repeat: 1 }, 0);
+      tl.to("#orb2", { x: -120, y: -110, scale: 1.12, duration: D / 2, ease: "sine.inOut", yoyo: true, repeat: 1 }, 0);
+      tl.to("#orb3", { x: 140, y: -60, scale: 0.92, duration: D / 2, ease: "sine.inOut", yoyo: true, repeat: 1 }, 0);
+      tl.to("#mark", { y: -18, duration: D / 2, ease: "sine.inOut", yoyo: true, repeat: 1 }, 0);
+
+      // Arch lines: draw on, hold, draw off (dash offset loops cleanly).
+      ["#archUpper", "#archLower", "#flow1", "#flow2"].forEach((sel, i) => {
+        const el = document.querySelector(sel);
+        const len = el.getTotalLength();
+        gsap.set(el, { strokeDasharray: len, strokeDashoffset: len });
+        tl.to(el, { strokeDashoffset: 0, duration: 4.2, ease: "power2.inOut" }, 0.3 + i * 0.35);
+        tl.to(el, { strokeDashoffset: -len, duration: 3.6, ease: "power2.inOut" }, 7.6 + i * 0.25);
+      });
+
+      // 32 dots breathe in a travelling wave around the arches.
+      dots.forEach((c, i) => {
+        const at = 1.2 + (i % 16) * 0.11 + (i >= 16 ? 0.35 : 0);
+        tl.to(c, { attr: { r: 10 }, opacity: 0.55, duration: 0.9, ease: "sine.out" }, at);
+        tl.to(c, { attr: { r: 7 }, opacity: 0.16, duration: 1.6, ease: "sine.inOut" }, at + 0.9);
+        tl.to(c, { opacity: 0.32, duration: 1.2, ease: "sine.inOut" }, 7 + (i % 16) * 0.06);
+        tl.to(c, { opacity: 0.16, duration: 1.4, ease: "sine.inOut" }, 9.2 + (i % 16) * 0.06);
+      });
+
+      // Soft light sweep across the frame.
+      tl.fromTo("#sweep", { x: 700 }, { x: 2200, duration: 3.2, ease: "power1.inOut" }, 4.4);
+
+      tl.set({}, {}, D); // pin exact duration
+      window.__timelines["hero-ambient"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

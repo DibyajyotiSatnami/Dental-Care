@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" preserveAspectRatio="xMidYMid slice">
+  <!-- PLACEHOLDER portrait: replace with the dentist's real photograph -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ddf4ef"/><stop offset="1" stop-color="#f4fbfa"/></linearGradient>
+    <linearGradient id="coat" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e6f2f1"/></linearGradient>
+  </defs>
+  <rect width="600" height="800" fill="url(#bg)"/>
+  <circle cx="470" cy="150" r="120" fill="#c3ebe2" opacity=".6"/>
+  <circle cx="300" cy="300" r="105" fill="#9fcfd2"/>
+  <path d="M90 800c0-170 90-290 210-290s210 120 210 290Z" fill="url(#coat)" stroke="#cfe5e3" stroke-width="3"/>
+  <path d="M300 520l-55 80 55 200 55-200Z" fill="#087f8c" opacity=".9"/>
+  <path d="M230 560c-30 60-20 120 20 150" fill="none" stroke="#123047" stroke-width="7" stroke-linecap="round" opacity=".55"/>
+  <circle cx="252" cy="716" r="14" fill="none" stroke="#123047" stroke-width="7" opacity=".55"/>
+</svg>

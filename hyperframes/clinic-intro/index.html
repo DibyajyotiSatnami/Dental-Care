@@ -1,0 +1,188 @@
+<!doctype html>
+<!--
+  32 Dental Care — Branded clinic introduction (HyperFrames composition, 16s, loops)
+  Scenes:
+    1. 0.0–3.6s   32 dots assemble into upper & lower dental arches
+    2. 3.0–6.4s   The arches resolve into the "32 Dental Care" wordmark + location
+    3. 6.2–10.2s  Editorial typography: Your Smile. / Our Passion. / Your Health.
+    4. 10.0–13.6s Service introduction sequence
+    5. 13.4–16s   Call to action: book on WhatsApp, then fades for a clean loop
+  Rendered to /public/videos/clinic-intro.{webm,mp4,jpg} by ../render.sh
+-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Manrope"; src: url("assets/manrope.woff2") format("woff2"); font-weight: 200 800; }
+      @font-face { font-family: "Inter"; src: url("assets/inter.woff2") format("woff2"); font-weight: 100 900; }
+      :root { --ivory: #fafcfc; --mint: #ddf4ef; --teal: #087f8c; --teal2: #5fb8c0; --navy: #123047; --deep: #0b2133; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--deep); }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: "Manrope", sans-serif; color: #fff;
+        background: radial-gradient(1200px 800px at 75% 20%, #12475a 0%, rgba(18,71,90,0) 60%), radial-gradient(1000px 700px at 10% 100%, #0e3d4d 0%, rgba(14,61,77,0) 60%), var(--deep); }
+      .clip { position: absolute; inset: 0; }
+      .glow { position: absolute; border-radius: 50%; filter: blur(110px); }
+      #glowA { width: 900px; height: 900px; left: 980px; top: -300px; background: rgba(8,127,140,.45); }
+      #glowB { width: 800px; height: 800px; left: -260px; top: 520px; background: rgba(95,184,192,.22); }
+      #grid { position: absolute; inset: 0; opacity: .06;
+        background-image: linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.6) 1px, transparent 1px);
+        background-size: 96px 96px; }
+
+      /* Scene 2 — wordmark */
+      #wordmark { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+      #wm-row { display: flex; align-items: baseline; gap: 34px; }
+      #wm-32 { font-size: 260px; font-weight: 800; letter-spacing: -0.06em; line-height: .9;
+        background: linear-gradient(135deg, #ddf4ef 0%, #5fb8c0 55%, #087f8c 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+      #wm-text { font-size: 132px; font-weight: 700; letter-spacing: -0.04em; line-height: .9; overflow: hidden; }
+      #wm-text span { display: inline-block; }
+      #wm-loc { margin-top: 46px; font-family: "Inter"; font-size: 26px; font-weight: 600; letter-spacing: .5em; text-transform: uppercase; color: var(--teal2); }
+      #wm-line { margin-top: 40px; width: 520px; height: 2px; background: linear-gradient(90deg, transparent, #5fb8c0, transparent); transform-origin: center; }
+
+      /* Scene 3 — editorial type */
+      #type { display: flex; flex-direction: column; justify-content: center; padding-left: 190px; }
+      .line { overflow: hidden; padding-bottom: 12px; }
+      .line span { display: inline-block; font-size: 168px; font-weight: 800; letter-spacing: -0.05em; line-height: 1; }
+      .line.accent span { background: linear-gradient(90deg, #ddf4ef, #5fb8c0); -webkit-background-clip: text; background-clip: text; color: transparent; }
+      #type-kicker { font-family: "Inter"; font-size: 24px; font-weight: 600; letter-spacing: .42em; text-transform: uppercase; color: var(--teal2); margin-bottom: 36px; }
+
+      /* Scene 4 — services */
+      #services { display: grid; grid-template-columns: 760px 1fr; align-items: center; padding: 0 190px; }
+      #svc-title { font-size: 92px; font-weight: 800; letter-spacing: -0.045em; line-height: 1.02; }
+      #svc-title em { font-style: normal; color: var(--teal2); }
+      #svc-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 22px 28px; }
+      #svc-list li { font-family: "Inter"; font-size: 30px; font-weight: 600; padding: 22px 26px; border-radius: 22px;
+        background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); display: flex; align-items: center; gap: 16px; }
+      #svc-list li i { width: 12px; height: 12px; border-radius: 50%; background: var(--teal2); flex: none; }
+
+      /* Scene 5 — CTA */
+      #cta { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+      #cta-h { font-size: 120px; font-weight: 800; letter-spacing: -0.05em; line-height: 1; }
+      #cta-sub { margin-top: 30px; font-family: "Inter"; font-size: 34px; color: rgba(255,255,255,.72); }
+      #cta-pill { margin-top: 58px; display: inline-flex; align-items: center; gap: 22px; padding: 30px 54px; border-radius: 999px;
+        background: #1fae5b; font-size: 40px; font-weight: 700; box-shadow: 0 30px 80px -20px rgba(31,174,91,.7); }
+      #cta-pill svg { width: 50px; height: 50px; }
+      #fade { position: absolute; inset: 0; background: var(--deep); opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="clinic-intro" data-start="0" data-duration="16" data-width="1920" data-height="1080" data-fps="30">
+      <div id="bg" class="clip" data-start="0" data-duration="16" data-track-index="0">
+        <div id="grid"></div>
+        <div id="glowA" class="glow"></div>
+        <div id="glowB" class="glow"></div>
+      </div>
+
+      <svg id="arch" class="clip" data-start="0" data-duration="6.6" data-track-index="1" viewBox="0 0 1920 1080"><g id="dots"></g></svg>
+
+      <div id="wordmark" class="clip" data-start="3" data-duration="3.6" data-track-index="2">
+        <div id="wm-row"><div id="wm-32">32</div><div id="wm-text"><span>Dental&nbsp;Care</span></div></div>
+        <div id="wm-line"></div>
+        <div id="wm-loc">Guwahati · Assam</div>
+      </div>
+
+      <div id="type" class="clip" data-start="6.2" data-duration="4.2" data-track-index="3">
+        <div id="type-kicker">32 Dental Care</div>
+        <div class="line"><span>Your Smile.</span></div>
+        <div class="line accent"><span>Our Passion.</span></div>
+        <div class="line"><span>Your Health.</span></div>
+      </div>
+
+      <div id="services" class="clip" data-start="10" data-duration="3.8" data-track-index="4">
+        <div id="svc-title">Complete care<br />for <em>every</em><br />smile.</div>
+        <ul id="svc-list">
+          <li><i></i>General Dentistry</li>
+          <li><i></i>Teeth Cleaning</li>
+          <li><i></i>Root Canal</li>
+          <li><i></i>Teeth Whitening</li>
+          <li><i></i>Dental Implants</li>
+          <li><i></i>Braces</li>
+          <li><i></i>Cosmetic Dentistry</li>
+          <li><i></i>Pediatric Dentistry</li>
+        </ul>
+      </div>
+
+      <div id="cta" class="clip" data-start="13.4" data-duration="2.6" data-track-index="5">
+        <div id="cta-h">Your comfort is our priority.</div>
+        <div id="cta-sub">Request your appointment in under a minute.</div>
+        <div id="cta-pill">
+          <svg viewBox="0 0 24 24" fill="#fff"><path d="M19.05 4.91A9.82 9.82 0 0 0 12.04 2C6.6 2 2.17 6.43 2.17 11.87c0 1.74.46 3.44 1.32 4.94L2.08 22l5.33-1.4a9.86 9.86 0 0 0 4.63 1.18h.01c5.44 0 9.87-4.43 9.87-9.87 0-2.64-1.03-5.12-2.87-7Zm-7.01 15.2a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.16.83.84-3.08-.2-.32a8.17 8.17 0 0 1-1.25-4.34c0-4.52 3.68-8.2 8.21-8.2a8.16 8.16 0 0 1 8.2 8.21c0 4.52-3.68 8.2-8.15 8.23Z"/></svg>
+          Book on WhatsApp
+        </div>
+      </div>
+
+      <div id="fadeLayer" class="clip" data-start="0" data-duration="16" data-track-index="6"><div id="fade"></div></div>
+    </div>
+
+    <script>
+      const NS = "http://www.w3.org/2000/svg";
+      const g = document.getElementById("dots");
+      const dots = [];
+      for (let arch = 0; arch < 2; arch++) {
+        for (let i = 0; i < 16; i++) {
+          const t = (i / 15) * Math.PI;
+          const cx = 960 - Math.cos(t) * 520;
+          const cy = arch === 0 ? 520 - Math.sin(t) * 300 : 580 + Math.sin(t) * 260;
+          const c = document.createElementNS(NS, "circle");
+          c.setAttribute("cx", cx.toFixed(1));
+          c.setAttribute("cy", cy.toFixed(1));
+          c.setAttribute("r", "15");
+          c.setAttribute("fill", i === 7 || i === 8 ? "#ddf4ef" : "#5fb8c0");
+          g.appendChild(c);
+          dots.push({ el: c, cx, cy });
+        }
+      }
+
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const E = "expo.out";
+
+      // Background breathing
+      tl.to("#glowA", { x: -220, y: 120, duration: 8, ease: "sine.inOut", yoyo: true, repeat: 1 }, 0);
+      tl.to("#glowB", { x: 260, y: -90, duration: 8, ease: "sine.inOut", yoyo: true, repeat: 1 }, 0);
+
+      // Scene 1 — 32 dots assemble (from the centre outwards, each tooth "placed")
+      dots.forEach((d, i) => {
+        const order = i % 16;
+        gsap.set(d.el, { opacity: 0, attr: { cx: 960, cy: 550, r: 4 } });
+        tl.to(d.el, { opacity: 1, attr: { cx: d.cx, cy: d.cy, r: 15 }, duration: 1.3, ease: E }, 0.25 + order * 0.07 + (i >= 16 ? 0.18 : 0));
+      });
+      // Scene 1 → 2: arches converge into the wordmark
+      dots.forEach((d, i) => {
+        tl.to(d.el, { attr: { cx: 600 + (i % 16) * 48, cy: 540, r: 3 }, opacity: 0, duration: 0.9, ease: "power3.in" }, 2.7 + (i % 16) * 0.012);
+      });
+
+      // Scene 2 — wordmark
+      tl.from("#wm-32", { scale: 0.6, opacity: 0, filter: "blur(18px)", duration: 1.2, ease: E }, 3.25);
+      tl.from("#wm-text span", { yPercent: 110, duration: 1.1, ease: E }, 3.45);
+      tl.from("#wm-line", { scaleX: 0, duration: 1.1, ease: E }, 3.8);
+      tl.from("#wm-loc", { opacity: 0, scaleX: 1.25, duration: 1.3, ease: E }, 3.9);
+      tl.to("#wordmark", { opacity: 0, y: -40, filter: "blur(10px)", duration: 0.6, ease: "power2.in" }, 5.95);
+
+      // Scene 3 — editorial typography
+      tl.from("#type-kicker", { opacity: 0, x: -30, duration: 0.8, ease: E }, 6.3);
+      tl.from("#type .line span", { yPercent: 115, rotate: 3, duration: 1.0, ease: E, stagger: 0.32 }, 6.45);
+      tl.to("#type .line span", { yPercent: -115, duration: 0.6, ease: "power3.in", stagger: 0.08 }, 9.6);
+      tl.to("#type-kicker", { opacity: 0, duration: 0.4 }, 9.7);
+
+      // Scene 4 — services
+      tl.from("#svc-title", { opacity: 0, x: -60, duration: 1, ease: E }, 10.1);
+      tl.from("#svc-list li", { opacity: 0, y: 40, scale: 0.96, duration: 0.8, ease: E, stagger: 0.08 }, 10.3);
+      tl.to("#svc-list li", { background: "rgba(8,127,140,.55)", borderColor: "rgba(221,244,239,.5)", duration: 0.25, stagger: 0.12, yoyo: true, repeat: 1 }, 11.4);
+      tl.to("#services", { opacity: 0, scale: 0.97, duration: 0.5, ease: "power2.in" }, 13.25);
+
+      // Scene 5 — CTA
+      tl.from("#cta-h", { opacity: 0, y: 50, filter: "blur(12px)", duration: 1, ease: E }, 13.5);
+      tl.from("#cta-sub", { opacity: 0, y: 20, duration: 0.8, ease: E }, 13.75);
+      tl.from("#cta-pill", { opacity: 0, scale: 0.85, duration: 0.9, ease: "back.out(1.6)" }, 13.95);
+
+      // Fade out for a clean loop back to scene 1
+      tl.to("#fade", { opacity: 1, duration: 0.55, ease: "power1.in" }, 15.45);
+
+      tl.set({}, {}, 16);
+      window.__timelines["clinic-intro"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
