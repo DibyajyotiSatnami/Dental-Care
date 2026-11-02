@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useIsMobile, usePrefersReducedMotion } from "@/lib/hooks";
 import { cn } from "@/lib/cn";
+import { asset } from "@/lib/asset";
 
 /**
  * Plays a HyperFrames-rendered motion sequence (see /hyperframes) as a muted,
@@ -41,7 +42,7 @@ export function AmbientVideo({
     return () => io.disconnect();
   }, [enabled]);
 
-  const poster = `/videos/${name}.jpg`;
+  const poster = asset(`/videos/${name}.jpg`);
 
   if (!enabled) {
     // eslint-disable-next-line @next/next/no-img-element
@@ -60,8 +61,8 @@ export function AmbientVideo({
       aria-hidden="true"
       tabIndex={-1}
     >
-      <source src={`/videos/${name}.webm`} type="video/webm" />
-      <source src={`/videos/${name}.mp4`} type="video/mp4" />
+      <source src={asset(`/videos/${name}.webm`)} type="video/webm" />
+      <source src={asset(`/videos/${name}.mp4`)} type="video/mp4" />
     </video>
   );
 }

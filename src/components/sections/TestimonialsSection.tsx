@@ -8,6 +8,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/motion/Reveal";
 import { usePrefersReducedMotion } from "@/lib/hooks";
 import { cn } from "@/lib/cn";
+import { asset } from "@/lib/asset";
 
 export function TestimonialsSection() {
   const [[index, dir], setState] = useState<[number, number]>([0, 1]);
@@ -71,7 +72,7 @@ export function TestimonialsSection() {
                   <figcaption className="mt-8 flex items-center justify-center gap-3">
                     {t.photo ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={t.photo} alt={t.name} className="h-12 w-12 rounded-full object-cover" loading="lazy" />
+                      <img src={asset(t.photo)} alt={t.name} className="h-12 w-12 rounded-full object-cover" loading="lazy" />
                     ) : (
                       <span className="grid h-12 w-12 place-items-center rounded-full bg-mint text-teal">
                         <UserRound className="h-5 w-5" aria-hidden="true" />

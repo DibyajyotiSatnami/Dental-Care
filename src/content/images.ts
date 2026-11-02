@@ -53,12 +53,14 @@ export const images = {
   },
 } satisfies Record<string, SiteImage>;
 
+import { asset } from "@/lib/asset";
+
 /**
  * Append Unsplash resizing params (served as WebP/AVIF automatically).
  * Local images are returned unchanged.
  */
 export function sized(src: string, width: number, quality = 72): string {
-  if (!src.startsWith("https://images.unsplash.com/")) return src;
+  if (!src.startsWith("https://images.unsplash.com/")) return asset(src);
   return `${src}?auto=format&fit=crop&w=${width}&q=${quality}`;
 }
 

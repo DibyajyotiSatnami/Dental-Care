@@ -5,6 +5,7 @@ import { m, useScroll, useTransform } from "motion/react";
 import { Pause, Play } from "lucide-react";
 import { Reveal } from "@/components/motion/Reveal";
 import { usePrefersReducedMotion } from "@/lib/hooks";
+import { asset } from "@/lib/asset";
 
 /**
  * Branded clinic introduction film — a timeline-based motion graphics sequence
@@ -63,15 +64,15 @@ export function ClinicFilm() {
             <video
               ref={videoRef}
               className="absolute inset-0 h-full w-full object-cover"
-              poster="/videos/clinic-intro.jpg"
+              poster={asset("/videos/clinic-intro.jpg")}
               muted
               loop
               playsInline
               preload="none"
               aria-label="Animated introduction: 32 Dental Care, a dental clinic in Guwahati, Assam"
             >
-              <source src="/videos/clinic-intro.webm" type="video/webm" />
-              <source src="/videos/clinic-intro.mp4" type="video/mp4" />
+              <source src={asset("/videos/clinic-intro.webm")} type="video/webm" />
+              <source src={asset("/videos/clinic-intro.mp4")} type="video/mp4" />
             </video>
           </div>
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy/60 via-transparent to-transparent" aria-hidden="true" />

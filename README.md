@@ -21,6 +21,16 @@ Set the live domain before building for production (used for SEO, the sitemap an
 NEXT_PUBLIC_SITE_URL=https://your-domain.com npm run build
 ```
 
+### Publishing on GitHub Pages
+
+The workflow `.github/workflows/deploy-pages.yml` tests, builds and deploys the site automatically on every push. The base path (`/Dental-Care`) and site URL come from GitHub, so links and SEO tags point to the right address.
+
+**Live URL:** https://dibyajyotisatnami.github.io/Dental-Care/
+
+If the first run fails at *Configure Pages* or *Deploy*, enable Pages once: **Settings → Pages → Build and deployment → Source: GitHub Actions**. Then re-run the workflow from the **Actions** tab.
+
+**Custom domain (optional):** add it under Settings → Pages. Then set `NEXT_PUBLIC_BASE_PATH` to empty and `NEXT_PUBLIC_SITE_URL` to your domain in the workflow.
+
 ---
 
 ## ✏️ Items to replace (placeholders)
